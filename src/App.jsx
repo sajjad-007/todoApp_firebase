@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
-import { getDatabase, push, ref, set,onValue,remove } from "firebase/database"; 
+import { getDatabase, push, ref, set,onValue,remove, update } from "firebase/database"; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import { IoIosAddCircle } from "react-icons/io";
+import { GrUpdate } from "react-icons/gr";
 
 
 function App() {
   let [text,setText] = useState("")
   let [arr,setArr] = useState([])
+  const[isBtn,setIsBtn] = useState(true)
+  const[allInfo,setAllInfo] =useState("")
   const db = getDatabase();
 
   let HandleInput = (e) => {
@@ -36,7 +40,16 @@ function App() {
           });
       })
     } else {
-      console.log("please enter your text");
+      toast.error('Please enter your text', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     }
     console.log(text);
   }
@@ -48,7 +61,7 @@ function App() {
     const TodoRef = ref(db, 'new_name' );
     onValue(TodoRef, (snapshot) => {
       let array = []
-      snapshot.forEach((item)=>{              // item.val()= firebase er value return korbe
+      snapshot.forEach((item) => {              // item.val()= firebase er value return korbe
         array.push({...item.val(), id: item.key})  // item.key = firebase er unique id gula always key er modde pabo
       })
       setArr(array);
@@ -69,22 +82,51 @@ function App() {
         });
     })
   }
-  let HandleEdit = (Editinfo) =>{
+  let HandleEdit = (Editinfo) => {
     setText(Editinfo.myText)
-    // console.log(Editinfo.myText.value);
+    setIsBtn(false)
+    setAllInfo(Editinfo);
+  }
+  let handleUpdate = () => {
+    setIsBtn(true)
+    update(ref(db,'new_name/' + allInfo.id),{
+      myText:text,
+    }).then(()=>{
+      toast.success('Replace successfully', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+        setText("")
+    })
   }
   return (
-    <>
+    <div className="main">
       <ToastContainer />
-      <input onChange={HandleInput} type="text" name="text" value={text} placeholder="enter text" />
-      <button onClick={HandleSubmit}>Submit</button>
-      <ul>
-        {arr.map((item,index)=>(
-          <li key={index}>{item.myText} <button onClick={()=>HanldeRemove (item.id)}>Remove</button> <button onClick={()=> HandleEdit (item)}>Edit</button></li>
-        ))}
-      </ul>
+      <h1>Todo List</h1>
+      <div className="text_area">
+        <input onChange={HandleInput} type="text" name="text" value={text} placeholder="enter text" />
+        { isBtn 
+          ?
+          <button onClick={HandleSubmit}> <IoIosAddCircle /> </button>
+          :
+          <button onClick={handleUpdate}> <GrUpdate /> </button>
+        }
+      </div>
+      <div className="ouput">
+        <ul>
+          {arr.map((item,index) => (
+            <li key={index}>{item.myText} <button onClick={() => HanldeRemove (item.id)}>Remove</button> <button onClick={()=> HandleEdit (item)}>Edit</button></li>
+          ))}
+        </ul>
+      </div>
       
-    </>
+    </div>
   )
 }
 

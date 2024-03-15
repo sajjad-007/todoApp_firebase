@@ -8,6 +8,6 @@ import About from './About.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
-    <About/>
+    {/* <About/> */}
   </React.StrictMode>,
 )

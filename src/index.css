@@ -1,6 +1,54 @@
+
+.main {
+    background-color: aqua;
+    margin: 0 auto;
+    padding: 10px 20px;
+    width: 500px;
+}
+.main h1 {
+    color: black;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+}
+.text_area{
+    /* background-color: blue; */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.text_area button{
+    background: blueviolet;
+    color: white;
+    font-size: 40px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 ul{
     display: flex;
     gap: 15px;
     flex-direction: column-reverse;
     list-style-type: none;
+    background-color: yellowgreen;
+    padding: 20px 10px;
+}
+ul li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 26px;
+}
+ul li button{
+    padding: 5px 10px;
+    margin-left: 100px;
+    display: block;    
+}
+input {
+    padding: 16px 90px;
+    font-size: 20px;
+    border: 1px solid black;
+    background-color: transparent;
 }
