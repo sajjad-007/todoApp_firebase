@@ -68,6 +68,7 @@ function App() {
     });
   },[])
   
+  // firebase remove operation
   let HanldeRemove = (Removeid)=> {
     remove(ref(db,'new_name/' + Removeid)).then(()=>{
       toast.error('Item remove successfully', {
@@ -82,11 +83,14 @@ function App() {
         });
     })
   }
+  
+  // firebase Edit operation
   let HandleEdit = (Editinfo) => {
     setText(Editinfo.myText)
     setIsBtn(false)
     setAllInfo(Editinfo);
   }
+  // firebase Update operation
   let handleUpdate = () => {
     setIsBtn(true)
     update(ref(db,'new_name/' + allInfo.id),{
